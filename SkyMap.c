@@ -2,18 +2,22 @@
 int N;
 int data[26][26];
 int G = 2;
-void check(int i, int j, int N)
+int check(int i, int j, int N)
 {
+    int ret = 0;
     if(!(i >= 0 && j >=0 && i<=N && j <= N))
-        return;
+        return 0;
     if(data[i][j] == 1)
     {
+        ret++;
         data[i][j] = G;
-        check(i-1,j,N);
-        check(i+1,j,N);
-        check(i,j-1,N);
-        check(i,j+1,N);
+        ret = ret + check(i-1,j,N);
+        ret = ret + check(i+1,j,N);
+        ret = ret + check(i,j-1,N);
+        ret = ret + check(i,j+1,N);
     }
+    else return 0;
+    return ret;
 }
 int main(void)
 {
@@ -62,8 +66,11 @@ int main(void)
 			for(j=1; j<=N; j++) {
                             if(data[i][j] == 1)
                             {
-                                check(i,j,N);
+                                temp = check(i,j,N);
                                 G++;
+                                max++;
+                                if(temp > num)
+                                    num = temp;
                             }
 			}
 		}
@@ -75,6 +82,7 @@ int main(void)
                         //printf("\n");
 		}
                 /*Find answer*/
+                /*
 		for(i=1; i<=N; i++) {
 			for(j=1; j<=N; j++) {
                             if(data[i][j] > max)
@@ -89,9 +97,9 @@ int main(void)
                                     num = temp;;
                             }
 			}
-		}
+		}*/
 
-                printf("\n%d %d",max-1,num);
+                printf("\n%d %d",max,num);
                 max = num = 0;
 
 		/**********************************
